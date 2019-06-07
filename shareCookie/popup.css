@@ -1,0 +1,25 @@
+body {
+  padding: 10px;
+}
+
+label {
+  height: 30px;
+  line-height: 30px;
+}
+
+input {
+  margin-top: 10px;
+  padding-left: 10px;
+  height: 30px;
+  line-height: 30px;
+}
+
+#btn-save {
+  margin-top: 10px;
+  width: 100px;
+  height: 30px;
+  border: none;
+  color: #fff;
+  background-color: #2d8cf0;
+  border-color: #2d8cf0;
+}

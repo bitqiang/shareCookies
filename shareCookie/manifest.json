@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+  "name": "shareCookies",
+  "version": "0.0.1",
+  "description": "共享页面间token",
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_title": "共享页面之间的登录信息",
+    "default_popup": "./dist/index.html"
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "icons": {
+    "48": "icon.png"
+  },
+  "permissions": [
+    "storage",
+    "cookies",
+    "http://*/*",
+    "https://*/*",
+    "*://*/*"
+  ]
+}
