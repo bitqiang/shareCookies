@@ -9,8 +9,7 @@ const cookies = (function () {
   // 全局变量存储配置
   let userCookiesConfig   //cookie配置
   let cookiesTimer = null   //定时器
-  let ListenerCookies = true //是否监听cookie的变化，可能有性能问题，默认关闭
-  
+  let listenerCookies = true //是否监听cookie的变化，可能有性能问题，默认关闭
   
   // 设置cookie
   let setCookies = (source = [], target = []) => {
@@ -44,15 +43,16 @@ const cookies = (function () {
 // 监听cookies的变化
   chrome.cookies.onChanged.addListener(async ({ removed, cookie }) => {
     
-    // 是否监听cookie变化
-    if (!ListenerCookies) {
-      return
-    }
-    
     //  是否为删除cookie出发，删除cookie的时候不需要执行以下
     if (removed) {
       return
     }
+    
+    // 是否监听cookie变化
+    if (!listenerCookies) {
+      return
+    }
+    
     
     clearTimeout(cookiesTimer)
     cookiesTimer = setTimeout(() => {
@@ -64,7 +64,6 @@ const cookies = (function () {
   const syncCookie = async () => {
     if (!userCookiesConfig) {
       userCookiesConfig = await getStorageData('cookies')
-      console.log('里面', userCookiesConfig)
     }
     
     let enableUserCookiesConfig = userCookiesConfig.filter(i => i.status)
@@ -95,9 +94,15 @@ const cookies = (function () {
   const updateData = value => {
     userCookiesConfig = value.cookiesArray
   }
+  
+  const updateIsSyncCookies = value => {
+    listenerCookies = value
+  }
   return {
     init,
-    updateData
+    updateIsSyncCookies,
+    updateData,
+    syncCookie
   }
 })()
 

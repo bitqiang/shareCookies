@@ -11,6 +11,14 @@ chrome.runtime.onMessage.addListener(data => {
       cookies.updateData(data.value)
       cors.updateData(data.value)
       break
-    case '1':
+    case 'updateIsSyncCookies':
+      cookies.updateIsSyncCookies(data.value)
   }
 })
+
+function getBackground () {
+  return {
+    cookies,
+    cors
+  }
+}

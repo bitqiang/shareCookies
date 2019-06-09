@@ -7,7 +7,17 @@
 <template>
 <div class="cookie">
 	<el-button @click="cookiesArray.push({source:[' '],target:[' ']})" size="mini" round type="primary">添加</el-button>
+	<el-button @click="syncCookies" size="mini" round type="primary">同步cookies</el-button>
 
+	<p>
+		是否自动同步cookies(有性能损耗)
+			<el-switch
+				v-model="listenerCookies" active-color="#13ce66" inactive-color="#ff4949"
+			>
+		</el-switch>
+	</p>
+
+	
 	<div v-for="(item,index) of cookiesArray" @click="changeFrom(index,item)">
 		<el-card shadow="hover" class="detail-card">
 		  <p>来源IP：{{item.source.join('；')}}</p>
@@ -60,7 +70,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from "vue-property-decorator";
+import {Component, Vue, Watch} from "vue-property-decorator";
 
 @Component
 export default class Cookies extends Vue {
@@ -79,6 +89,7 @@ export default class Cookies extends Vue {
             status: false
         }
     ];
+    listenerCookies: boolean = false;
 
     curFrom: number = 999;
 
@@ -87,6 +98,14 @@ export default class Cookies extends Vue {
         target: ["192.168.1.1"],
     };
 
+    @Watch("listenerCookies")
+    onChildChanged(listenerCookies: boolean) {
+        chrome.storage.sync.set({listenerCookies}, () => {
+            chrome.runtime.sendMessage({type: "updateIsSyncCookies", value: listenerCookies});
+        });
+
+    }
+
     changeFrom(index: number, form: object): void {
         this.curFrom = index;
         this.form = form;
@@ -94,9 +113,14 @@ export default class Cookies extends Vue {
     }
 
     created() {
-        chrome.storage.sync.get(null, (data: { cookies: string; }) => {
+        chrome.storage.sync.get(null, (data: { cookies: string; listenerCookies: boolean }) => {
             this.cookiesArray = JSON.parse(data.cookies);
+            this.listenerCookies = !!data.listenerCookies;
         });
+    }
+
+    syncCookies() {
+        chrome.extension.getBackgroundPage().getBackground().cookies.syncCookie();
     }
 
     deleteCardHandler(event, index: number) {
