@@ -1,11 +1,11 @@
 {
   "manifest_version": 2,
-  "name": "shareCookies",
+  "name": "Front-end development tools",
   "version": "0.0.1",
-  "description": "共享页面间token",
+  "description": "前端开发使用的cookies共享以及跨域插件",
   "browser_action": {
     "default_icon": "icon.png",
-    "default_title": "共享页面之间的登录信息",
+    "default_title": "前端开发工具",
     "default_popup": "./dist/index.html"
   },
   "background": {

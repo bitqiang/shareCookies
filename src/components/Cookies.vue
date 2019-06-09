@@ -126,6 +126,7 @@ export default class Cookies extends Vue {
 				position: absolute;
 				top: 10px;
 				right: 10px;
+				z-index: 2;
 				cursor: pointer;
 			}
 			
