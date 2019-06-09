@@ -20,6 +20,8 @@
   "permissions": [
     "storage",
     "cookies",
+    "webRequest",
+    "webRequestBlocking",
     "http://*/*",
     "https://*/*",
     "*://*/*"

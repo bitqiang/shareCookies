@@ -11,7 +11,9 @@
 		    <el-tab-pane label="cookie共享" name="cookie">
 			    <Cookies ref="cookies" />
 		    </el-tab-pane>
-		    <el-tab-pane label="跨域配置" name="cors">fasf</el-tab-pane>
+		    <el-tab-pane label="跨域配置" name="cors">
+			    <Cors ref="cors" />
+		    </el-tab-pane>
 		  </el-tabs>
 	</div>
 </template>
@@ -19,41 +21,54 @@
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
 import Cookies from "components/Cookies.vue";
+import Cors from "components/cors.vue";
 
 @Component({
-    components: {Cookies},
+    components: {Cookies, Cors},
 })
+
 export default class App extends Vue {
-    activeName: string = "cookie";
+    activeName: string = "cors";
 
     handleClick() {
         console.log(arguments);
     }
 
     beforeCreate() {
-        chrome.storage.onChanged.addListener(function(changes: any, namespace: any) {
-            for (const key in changes) {
-                const storageChange = changes[key];
-                console.log("存储123键“%s”（位于“%s”命名空间中）已更改。" +
-                    "原来的值为“%s”，新的值为“%s”。",
-                    key,
-                    namespace,
-                    storageChange.oldValue,
-                    storageChange.newValue);
-            }
-        });
+        // chrome.storage.onChanged.addListener(function(changes: any, namespace: any) {
+        //     for (const key in changes) {
+        //         const storageChange = changes[key];
+        //         console.log("存储123键“%s”（位于“%s”命名空间中）已更改。" +
+        //             "原来的值为“%s”，新的值为“%s”。",
+        //             key,
+        //             namespace,
+        //             storageChange.oldValue,
+        //             storageChange.newValue);
+        //     }
+        // });
 
     }
 
     saveData() {
-        // let test = chrome.extension.getBackgroundPage();
-        // console.log("test", test);
         let {cookiesArray} = this.$refs.cookies;
-        chrome.storage.sync.set({cookies: JSON.stringify(cookiesArray)}, res => {
-            console.log("res", res);
-        });
+        let {form} = this.$refs.cors;
 
-        // console.log("保存");
+        console.log("form", form);
+        let pass = form.every((item: { match: (arg0: RegExp) => void; }) => item.match(/\w+\.\w+/));
+		    
+        if (pass) {
+            chrome.storage.sync.set({cookies: JSON.stringify(cookiesArray), cors: JSON.stringify(form)}, res => {
+                chrome.runtime.sendMessage({type: "update", value: {cookiesArray, form}});
+                console.log("res", res);
+            });
+        } else {
+            this.$notify.error({
+                title: "",
+                message: "请输入正确的域名",
+                duration: 500
+            });
+        }
+
     }
 
     mounted() {
@@ -65,6 +80,6 @@ export default class App extends Vue {
 
 <style scoped>
 .app-tab {
-	width: 400px;
+	width: 320px;
 }
 </style>

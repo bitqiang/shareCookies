@@ -1,9 +1,8 @@
 import Vue from 'vue';
 import App from './App.vue';
 import './registerServiceWorker';
-// import './chromeApi';
 
-import {Button, Select, TabPane, Tabs, Card, Switch, Form, FormItem, Input, Icon} from 'element-ui';
+import {Button, Select, TabPane, Tabs, Card, Switch, Form, FormItem, Input, Icon, Notification} from 'element-ui';
 
 Vue.use(Button);
 Vue.use(Select);
@@ -16,6 +15,8 @@ Vue.use(FormItem);
 Vue.use(Input);
 Vue.use(Icon);
 
+Vue.prototype.$notify = Notification;
+// console.log('Message', Message);
 
 Vue.config.productionTip = false;
 
