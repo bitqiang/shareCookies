@@ -20,7 +20,7 @@
   "icons": {
     "48": "icon.png"
   },
-  "options_page": "readme.html",
+  "options_page": "docs/index.html",
   "permissions": [
     "storage",
     "cookies",
