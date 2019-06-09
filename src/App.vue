@@ -7,7 +7,7 @@
 <template>
 	<div class="app-tab">
 			<el-button @click="saveData" size="mini" round type="primary">保存</el-button>
-			 <el-tabs v-model="activeName" @tab-click="handleClick">
+			 <el-tabs v-model="activeName">
 		    <el-tab-pane label="cookie共享" name="cookie">
 			    <Cookies ref="cookies" />
 		    </el-tab-pane>
@@ -28,11 +28,7 @@ import Cors from "components/cors.vue";
 })
 
 export default class App extends Vue {
-    activeName: string = "cors";
-
-    handleClick() {
-        console.log(arguments);
-    }
+    activeName: string = "cookie";
 
     beforeCreate() {
         // chrome.storage.onChanged.addListener(function(changes: any, namespace: any) {
@@ -53,9 +49,8 @@ export default class App extends Vue {
         let {cookiesArray} = this.$refs.cookies;
         let {form} = this.$refs.cors;
 
-        console.log("form", form);
         let pass = form.every((item: { match: (arg0: RegExp) => void; }) => item.match(/\w+\.\w+/));
-		    
+
         if (pass) {
             chrome.storage.sync.set({cookies: JSON.stringify(cookiesArray), cors: JSON.stringify(form)}, res => {
                 chrome.runtime.sendMessage({type: "update", value: {cookiesArray, form}});

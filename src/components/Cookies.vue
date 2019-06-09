@@ -8,7 +8,7 @@
 <div class="cookie">
 	<el-button @click="cookiesArray.push({source:[' '],target:[' ']})" size="mini" round type="primary">添加</el-button>
 
-	<div v-for="(item,index) of cookiesArray" :key="index" @click="changeFrom(index,item)">
+	<div v-for="(item,index) of cookiesArray" @click="changeFrom(index,item)">
 		<el-card shadow="hover" class="detail-card">
 		  <p>来源IP：{{item.source.join('；')}}</p>
 		  <p>目标IP：{{item.target.join('；')}}</p>
@@ -21,6 +21,9 @@
 					  inactive-text="停用"
 				  >
 				</el-switch>
+			<i
+				class="el-icon-circle-close delete-card" title="删除" @click="deleteCardHandler($event,index)"
+			></i>
     </el-card>
 	</div>
 	
@@ -41,7 +44,6 @@
 		  </el-form-item>
 			
 		  <el-form-item label="目标URL" class="form-target">
-			  <i class="el-icon-circle-plus-outline"></i>
 				<div class="input-target" v-for="(item, index) of form.target">
 					<el-input v-model="form.target[index]">
 			     <template slot="prepend">http://</template>
@@ -97,6 +99,14 @@ export default class Cookies extends Vue {
         });
     }
 
+    deleteCardHandler(event, index: number) {
+        event.stopPropagation();
+        this.cookiesArray.splice(index, 1);
+        this.$nextTick(() => {
+            this.showForm = false;
+        });
+    }
+
     mounted() {
     }
 }
@@ -107,11 +117,18 @@ export default class Cookies extends Vue {
 		.detail-card {
 			width: 300px;
 			cursor: pointer;
+			position: relative;
 			
 			p {
 				overflow: hidden;
 				text-overflow: ellipsis;
 				white-space: nowrap;
+			}
+			
+			.delete-card {
+				position: absolute;
+				top: 10px;
+				right: 10px;
 			}
 		}
 		
