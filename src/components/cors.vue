@@ -26,7 +26,7 @@ import {Component, Vue} from "vue-property-decorator";
 
 @Component
 export default class Cors extends Vue {
-    form: Array<string> = ["baidu.com", "baidu1.com"];
+    form: Array<string> = [""];
 
     created() {
         chrome.storage.sync.get(null, (data: { cors: string; }) => {

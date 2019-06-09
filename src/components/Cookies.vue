@@ -77,26 +77,12 @@ export default class Cookies extends Vue {
 
     showForm: boolean = false;
     status: boolean = false;
-    cookiesArray: Array<Object> = [
-        {
-            source: ["baidu.com", "qq.com"],
-            target: ["192.168.1.1"],
-            status: false
-        },
-        {
-            source: ["element.eleme.cn", "qq.com"],
-            target: ["192.168.1.1"],
-            status: false
-        }
-    ];
+    cookiesArray: Array<Object> = [];
     listenerCookies: boolean = false;
 
     curFrom: number = 999;
 
-    form: object = {
-        source: ["baidu.com", "qq.com"],
-        target: ["192.168.1.1"],
-    };
+    form: object = {};
 
     @Watch("listenerCookies")
     onChildChanged(listenerCookies: boolean) {

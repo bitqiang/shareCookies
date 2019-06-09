@@ -7,6 +7,8 @@
 <template>
 	<div class="app-tab">
 			<el-button @click="saveData" size="mini" round type="primary">保存</el-button>
+			<el-button @click="openHelpHandler" size="mini" round type="primary">帮助</el-button>
+			<el-button @click="clearUserData" size="mini" round type="primary">清空数据</el-button>
 			 <el-tabs v-model="activeName">
 		    <el-tab-pane label="cookie共享" name="cookie">
 			    <Cookies ref="cookies" />
@@ -45,9 +47,20 @@ export default class App extends Vue {
 
     }
 
+    openHelpHandler() {
+        chrome.runtime.openOptionsPage();
+    }
+
+    clearUserData() {
+        chrome.storage.sync.clear((...arg) => {
+            console.log(arg);
+        });
+    }
+
     saveData() {
         let {cookiesArray} = this.$refs.cookies;
         let {form} = this.$refs.cors;
+
 
         let pass = form.every((item: { match: (arg0: RegExp) => void; }) => item.match(/\w+\.\w+/));
 
