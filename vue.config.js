@@ -6,7 +6,7 @@
 const path = require('path')
 const resolveFile = pathName => path.join(__dirname, pathName)
 module.exports = {
-  outputDir: resolveFile('./shareCookie/dist'),
+  outputDir: resolveFile('./Front-end-development-tools/dist'),
   assetsDir: '.',
   publicPath: './',
   configureWebpack: {

@@ -9,7 +9,7 @@ const cookies = (function () {
   // 全局变量存储配置
   let userCookiesConfig   //cookie配置
   let cookiesTimer = null   //定时器
-  let listenerCookies = true //是否监听cookie的变化，可能有性能问题，默认关闭
+  let listenerCookies = false //是否监听cookie的变化，可能有性能问题，默认关闭
   
   // 设置cookie
   let setCookies = (source = [], target = []) => {
@@ -89,6 +89,7 @@ const cookies = (function () {
   const init = async () => {
     // 获取配置信息
     userCookiesConfig = await getStorageData('cookies')
+    listenerCookies = await getStorageData('listenerCookies')
   }
   
   const updateData = value => {
